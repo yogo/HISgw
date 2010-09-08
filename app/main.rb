@@ -102,7 +102,7 @@ class HISGateway < Sinatra::Base
     else
       data = ::Unit.all
     end
-    post_foramt(data)
+    post_format(data)
   end
 
   post '/units/' do
