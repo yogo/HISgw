@@ -47,7 +47,7 @@ class HISGateway < Sinatra::Base
 
   # ODM Version
   get '/odm_version' do
-    ::ODMVersion.all
+    ::ODMVersion.first.version_number
   end
 
   # Sites
