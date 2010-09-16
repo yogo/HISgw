@@ -5,5 +5,4 @@ class GroupDescription
   property :group_description,  String, :field => "GroupDescription"
 
   has n, :groups, :model => "Group"
-
 end

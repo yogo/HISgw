@@ -6,8 +6,4 @@ class TopicCategoryCV
 
   has n, :iso_metadata, :model => "ISOMetadata"
 
-  validates_with_method :term, :method => :check_term
-  def check_term
-    check_ws_absence(self.term, "Term")
-  end
 end

@@ -1,6 +1,8 @@
 class Site
   include DataMapper::Resource
 
+  storage_names[:default] = "Sites"
+
   property :id,                  Serial,  :field => "SiteID",            :required => true, :key => true
   property :site_code,           String,  :field => "SiteCode",          :required => true
   property :site_name,           String,  :field => "SiteName",          :required => true

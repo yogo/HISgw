@@ -7,5 +7,4 @@ class OffsetType
 
   has n, :data_values, :model => "DataValue"
   belongs_to :Units, :model => "Unit", :child_key => [:offset_units_id]
-
 end

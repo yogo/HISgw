@@ -6,8 +6,4 @@ class SampleTypeCV
 
   has n, :samples, :model => "Sample"
 
-  validates_with_method :term, :method => :check_term
-  def check_term
-    check_ws_absence(self.Term, "Term")
-  end
 end

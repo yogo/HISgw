@@ -9,7 +9,7 @@ Bundler.require(:default)
 require 'config/datamapper'
 
 # Load DataMapper models for HIS
-Dir['app/models/**/*.rb'].each { |model| require(model) }
+require 'app/models/his/his'
 
 # Load the Application Version
 load File.join(File.dirname(__FILE__), 'VERSION')

@@ -1,6 +1,8 @@
 class Variable
   include DataMapper::Resource
 
+  storage_names[:default] = "Variables"
+
   property :id,               Serial, :required => true, :field => "VariableID",                :key => true
   property :variable_code,    String, :required => true, :field => "VariableCode"
   property :variable_name,    String, :required => true, :field => "VariableName"
@@ -26,9 +28,4 @@ class Variable
   belongs_to :data_values,          :model => "DataValue",         :child_key => [:varialbe_id]
 
   validates_uniqueness_of :variable_code
-
-  validates_with_method :variable_code, :method => :check_variable_code
-  def check_variable_code
-    check_ws_absence(self.variable_code, "VariableCode")
-  end
 end

@@ -10,8 +10,4 @@ class Sample
   belongs_to :sample_type_cv, :model => "SampleTypeCV", :child_key => [:sample_type]
   belongs_to :lab_methods, :model => "LabMethod", :child_key => [:lab_method_id]
 
-  validates_with_method :lab_simple_code, :method => :check_lab_sample_code
-  def check_lab_sample_code
-    check_ws_absence(self.lab_sample_code, "LabSampleCode")
-  end
 end

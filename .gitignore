@@ -1,3 +1,4 @@
 .bundle/config
 log/*
 config/database.yml
+tmp/*

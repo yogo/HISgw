@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    activesupport (3.0.0)
     addressable (2.2.0)
     bouncy-castle-java (1.5.0145.2)
     capistrano (2.5.19)
@@ -9,6 +10,7 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.0.0)
+    columnize (0.3.1)
     data_objects (0.10.2)
       addressable (~> 2.1)
     dm-core (1.0.0)
@@ -40,6 +42,7 @@ GEM
       ffi (>= 0.6.3)
     haml (3.0.18)
     highline (1.6.1)
+    jrexml (0.5.3)
     jruby-openssl (0.7.1)
       bouncy-castle-java
     json_pure (1.4.6)
@@ -55,6 +58,10 @@ GEM
     rack (1.2.1)
     rest-client (1.6.1)
       mime-types (>= 1.16)
+    ruby-debug (0.10.3)
+      columnize (>= 0.1)
+      ruby-debug-base (~> 0.10.3.0)
+    ruby-debug-base (0.10.3.2-java)
     sinatra (1.0)
       rack (>= 1.0)
 
@@ -62,14 +69,18 @@ PLATFORMS
   java
 
 DEPENDENCIES
+  activesupport (= 3.0)
   capistrano
   dm-core
   dm-serializer
   dm-sqlserver-adapter
   dm-validations
+  extlib
   ffi-ncurses
   haml
+  jrexml
   jruby-openssl
   mizuno
   rest-client
+  ruby-debug
   sinatra

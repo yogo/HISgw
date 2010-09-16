@@ -9,9 +9,4 @@ class SpatialReference
 
   has n, :sites, :model => "Site"
 
-  validates_with_method :srs_name, :method => :check_srs_name
-
-  def check_srs_name
-    check_ws_absence(self.srs_name, "SRSName")
-  end
 end

@@ -8,13 +8,4 @@ class QualityControlLevel
 
   has n, :data_values, :model => "DataValue"
 
- validates_with_method :quality_control_level_code, :method => :check_quality_control_level_code
-  def check_quality_control_level_code
-    check_ws_absence(self.quality_control_level_code, "QualityControlLevelCode")
-  end
-
-  validates_with_method :definition, :method => :check_definition
-  def check_definition
-    check_ws_absence(self.definition, "Definition")
-  end
 end

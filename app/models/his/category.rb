@@ -1,4 +1,4 @@
-class Categorie
+class Category
   include DataMapper::Resource
 
   property :id,                   Integer,  :required => true, :field => "VariableID",  :key => true

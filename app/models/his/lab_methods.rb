@@ -10,18 +10,4 @@ class LabMethod
 
   has n, :samples, :model => "Sample"
 
-  validates_with_method :lab_name, :method => :check_lab_name
-  def check_lab_name
-    check_ws_absence(self.lab_name, "LabName")
-  end
-
-  validates_with_method :lab_organization, :method => :check_lab_organization
-  def check_lab_organization
-    check_ws_absence(self.lab_organization, "LabOrganization")
-  end
-
-  validates_with_method :lab_method_name, :method => :check_lab_method_name
-  def check_lab_method_name
-    check_ws_absence(self.lab_method_name, "LabMethodName")
-  end
 end

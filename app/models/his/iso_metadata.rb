@@ -11,13 +11,4 @@ class ISOMetadata
   belongs_to  :topic_category_cv, :model => "TopicCategoryCV", :child_key => [:topic_category]
   has n,      :sources,           :model => "Source"
 
-  validates_with_method :title, :method => :check_title
-  def check_title
-    check_ws_absence(self.title, "Title")
-  end
-
-  validates_with_method :profile_version, :method => :check_profile_version
-  def check_profile_version
-    check_ws_absence(self.profile_version, "ProfileVersion")
-  end
 end

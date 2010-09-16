@@ -6,8 +6,4 @@ class CensorCodeCV
 
   has n,  :DataValues, :model => "DataValue"
 
-  validates_with_method :term, :method => :check_term
-  def check_term
-    check_ws_absence(self.term, "Term")
-  end
 end

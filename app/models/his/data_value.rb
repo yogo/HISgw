@@ -1,6 +1,8 @@
 class DataValue
   include DataMapper::Resource
 
+  storage_names[:default] = "DataValues"
+
   property :id,                       Serial,    :field => "ValueID",               :key => true
   property :data_value,               Float,     :field => "DataValue",             :required => true, :default => 0
   property :value_accuracy,           Float,     :field => "ValueAccuracy",                            :default => 1.0
