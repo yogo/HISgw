@@ -1,5 +1,3 @@
-#\ -s Jetty -w -p 4000 -P tmp/vhgw.pid
-
 # Standard requirements for Bundler management
 require 'rubygems'
 require 'bundler/setup'
