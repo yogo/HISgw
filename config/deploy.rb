@@ -2,7 +2,7 @@ $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require "rvm/capistrano"
 require "bundler/capistrano"
 
-set :rvm_ruby_string, 'jruby@vhgw'
+set :rvm_ruby_string, 'jruby'
 
 set :application,     "VOEIS - HIS Gateway"
 set :use_sudo,        false
