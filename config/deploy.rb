@@ -39,7 +39,7 @@ namespace :deploy do
 
   desc "Link the database.yml file into the new deployment."
   task :link_database_yml, :roles => :app do
-    run "ln -s #{deploy_to}/#{shared_dir}/config/database.yml #{release_path}/config/database.yml"
+    run "ln -s #{deploy_to}/#{shared_dir}/config/database.yml #{current_path}/config/database.yml"
   end
 end
 
