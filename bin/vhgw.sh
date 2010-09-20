@@ -1,15 +1,15 @@
 #!/bin/bash
 #
 
-RAILS_APP=/home/voeis-demo/vhgw/current
+APPDIR=/home/voeis-demo/vhgw/current
 PIDFILE=/home/voeis-demo/vhgw/shared/pids/vhgw.pid
 
 case "$1" in
   start)
     echo "Starting vhgw"
-    cd $RAILS_APP
+    cd $APPDIR
     nohup rackup -s Jetty > $RAILS_APP/log/vhgw.log 2>&1 &
-    if [ $! != $$ ]; then
+    if [ $! != $$ && -e $PIDFILE ]; then
       rm $PIDFILE
       echo $! > $PIDFILE
     else
@@ -24,7 +24,7 @@ case "$1" in
 
   stop)
     echo "Stopping vhgw"
-    cd $RAILS_APP
+    cd $APPDIR
     if [ -f $PIDFILE ]; then
       kill -2 `cat $PIDFILE`
       if [ "$!" == "0" ]; then
