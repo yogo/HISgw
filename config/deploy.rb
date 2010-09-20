@@ -27,11 +27,11 @@ namespace :deploy do
 
   desc "Start Server"
   task :start, :roles => :app do
-    run "nohup rackup -s Jetty 2>&1 >& #{release_path}/log/rackup.out &"
+    run "TZ=America/Denver #{release_path}/bin/vhgw.sh start"
   end
 
   desc "Stop Server"
   task :stop, :roles => :app do
-    run "bash -c 'kill -9 `cat #{release_path}/tmp/vhgw.pid`'"
+    run "TZ=America/Denver #{release_path}/bin/vhgw.sh stop"
   end
 end
