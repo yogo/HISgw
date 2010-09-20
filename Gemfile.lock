@@ -39,7 +39,6 @@ GEM
     ffi (0.6.3-java)
     ffi-ncurses (0.3.3)
       ffi (>= 0.6.3)
-    gem_plugin (0.2.3)
     haml (3.0.18)
     highline (1.6.1)
     jrexml (0.5.3)
@@ -47,8 +46,6 @@ GEM
       bouncy-castle-java
     json_pure (1.4.6)
     mizuno (0.3.6)
-    mongrel (1.1.5-java)
-      gem_plugin (>= 0.2.3)
     net-scp (1.0.3)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -57,6 +54,8 @@ GEM
     net-ssh-gateway (1.0.1)
       net-ssh (>= 1.99.1)
     rack (1.2.1)
+    rack-jetty (0.1.0)
+      rack (>= 1.0.0)
     sinatra (1.0)
       rack (>= 1.0)
 
@@ -76,5 +75,5 @@ DEPENDENCIES
   jrexml
   jruby-openssl
   mizuno
-  mongrel
+  rack-jetty
   sinatra

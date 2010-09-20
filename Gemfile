@@ -8,7 +8,7 @@ gem "dm-serializer"
 gem "dm-sqlserver-adapter"
 gem "haml"
 gem "extlib"
-gem "mongrel"
+gem "rack-jetty"
 gem "activesupport", "3.0"
 
 group :development do

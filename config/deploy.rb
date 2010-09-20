@@ -2,13 +2,12 @@ $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require "rvm/capistrano"
 require "bundler/capistrano"
 
-set :rvm_ruby_string, 'jruby'
-#set :rvm_type,        :user
+set :rvm_ruby_string, 'jruby@vhgw'
 
 set :application,     "VOEIS - HIS Gateway"
 set :use_sudo,        false
 
-set :repository,      "git@github.com:yogo/VOEIS-HIS-Gateway.git"
+set :repository,      "git://github.com/yogo/VOEIS-HIS-Gateway.git"
 set :scm,             :git
 set :shell,           "/bin/bash"
 
@@ -22,16 +21,17 @@ default_run_options[:pty] = false
 namespace :deploy do
   desc "Restart Server"
   task :restart, :roles => :app do
-    # This should call stop, then start
+    deploy.stop
+    deploy.start
   end
 
   desc "Start Server"
   task :start, :roles => :app do
-    run "nohup rackup -w -p 4000 -P #{release_path}/tmp/vhgw.pid 2>&1 >& #{release_path}/log/rackup.out &"
+    run "nohup rackup -s Jetty 2>&1 >& #{release_path}/log/rackup.out &"
   end
 
   desc "Stop Server"
   task :stop, :roles => :app do
-    run "kill -9 `cat #{release_path}/tmp/vhgw.pid`"
+    run "bash -c 'kill -9 `cat #{release_path}/tmp/vhgw.pid`'"
   end
 end
