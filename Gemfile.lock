@@ -10,7 +10,6 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.0.0)
-    columnize (0.3.1)
     data_objects (0.10.2)
       addressable (~> 2.1)
     dm-core (1.0.0)
@@ -40,14 +39,16 @@ GEM
     ffi (0.6.3-java)
     ffi-ncurses (0.3.3)
       ffi (>= 0.6.3)
+    gem_plugin (0.2.3)
     haml (3.0.18)
     highline (1.6.1)
     jrexml (0.5.3)
     jruby-openssl (0.7.1)
       bouncy-castle-java
     json_pure (1.4.6)
-    mime-types (1.16)
     mizuno (0.3.6)
+    mongrel (1.1.5-java)
+      gem_plugin (>= 0.2.3)
     net-scp (1.0.3)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -56,12 +57,6 @@ GEM
     net-ssh-gateway (1.0.1)
       net-ssh (>= 1.99.1)
     rack (1.2.1)
-    rest-client (1.6.1)
-      mime-types (>= 1.16)
-    ruby-debug (0.10.3)
-      columnize (>= 0.1)
-      ruby-debug-base (~> 0.10.3.0)
-    ruby-debug-base (0.10.3.2-java)
     sinatra (1.0)
       rack (>= 1.0)
 
@@ -81,6 +76,5 @@ DEPENDENCIES
   jrexml
   jruby-openssl
   mizuno
-  rest-client
-  ruby-debug
+  mongrel
   sinatra

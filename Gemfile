@@ -8,13 +8,12 @@ gem "dm-serializer"
 gem "dm-sqlserver-adapter"
 gem "haml"
 gem "extlib"
+gem "mongrel"
 gem "activesupport", "3.0"
 
 group :development do
   gem "mizuno"
   gem "capistrano"
-  gem "rest-client"
-  gem "ruby-debug"
 end
 
 platforms :jruby do

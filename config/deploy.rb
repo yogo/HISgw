@@ -1,16 +1,37 @@
-set :application, "VOEIS - HIS Gateway"
-set :repository,  "set your repository location here"
+$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
+require "rvm/capistrano"
+require "bundler/capistrano"
 
-set :scm, :git
-# Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
+set :rvm_ruby_string, 'jruby'
+#set :rvm_type,        :user
 
-role :web, "voeis.msu.montana.edu"                         # Your HTTP server, Apache/etc
-role :app, "voeis.msu.montana.edu"                         # This may be the same as your `Web` server
+set :application,     "VOEIS - HIS Gateway"
+set :use_sudo,        false
 
-# namespace :deploy do
-#   task :start do ; end
-#   task :stop do ; end
-#   task :restart, :roles => :app, :except => { :no_release => true } do
-#     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-#   end
-# end
+set :repository,      "git@github.com:yogo/VOEIS-HIS-Gateway.git"
+set :scm,             :git
+set :shell,           "/bin/bash"
+
+set  :user,           "voeis-demo"
+role :web,            "klank.msu.montana.edu"
+role :app,            "klank.msu.montana.edu"
+set  :deploy_to,      "/home/#{user}/vhgw"
+
+default_run_options[:pty] = false
+
+namespace :deploy do
+  desc "Restart Server"
+  task :restart, :roles => :app do
+    # This should call stop, then start
+  end
+
+  desc "Start Server"
+  task :start, :roles => :app do
+    run "nohup rackup -w -p 4000 -P #{release_path}/tmp/vhgw.pid 2>&1 >& #{release_path}/log/rackup.out &"
+  end
+
+  desc "Stop Server"
+  task :stop, :roles => :app do
+    run "kill -9 `cat #{release_path}/tmp/vhgw.pid`"
+  end
+end
