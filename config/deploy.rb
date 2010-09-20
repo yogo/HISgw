@@ -36,4 +36,11 @@ namespace :deploy do
   task :stop, :roles => :app do
     run "TZ=America/Denver #{release_path}/bin/vhgw.sh stop"
   end
+
+  desc "Link the database.yml file into the new deployment."
+  task :link_database_yml, :roles => :app do
+    run "ln -s #{deploy_to}/#{shared_dir}/config/database.yml #{release_path}/config/database.yml"
+  end
 end
+
+after "deploy:updated_code", "deploy:link_database_yml"
