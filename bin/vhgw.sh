@@ -8,7 +8,7 @@ case "$1" in
   start)
     echo "Starting vhgw"
     cd $APPDIR
-    nohup rackup -s Jetty > $APPDIR/log/vhgw.log 2>&1 &
+    nohup bundle exec rackup -s Jetty > $APPDIR/log/vhgw.log 2>&1 &
     if [ $! != $$ ]; then
       if [ -x $PIDFILE ]; then
         rm $PIDFILE
