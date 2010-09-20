@@ -10,7 +10,9 @@ case "$1" in
     cd $APPDIR
     nohup rackup -s Jetty > $APPDIR/log/vhgw.log 2>&1 &
     if [ $! != $$ ]; then
-      rm $PIDFILE
+      if [ -x $PIDFILE ]; then
+        rm $PIDFILE
+      fi
       echo $! > $PIDFILE
     else
       echo "Failed to start vhgw, it appears to already be running."
