@@ -32,7 +32,7 @@ case "$1" in
       if [ "$!" == "0" ]; then
         rm $PIDFILE
       else
-        echo "Failed to kill vhgw."#, resorting to brute force."
+        echo "Failed to kill vhgw, resorting to brute force."
         # Find the darn thing and kill it
         #kill -9 `ps auwx | grep trinidad | grep -v grep | awk '{ print $2 }'`
       fi
