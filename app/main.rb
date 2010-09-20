@@ -1,3 +1,19 @@
+# This is a patch, future rack should fix this.
+# http://gist.github.com/519415#file_rack_content_type_patch.rb
+
+class Rack::Request
+  def content_type
+    content_type = @env['CONTENT_TYPE']
+    if content_type == ''
+      nil
+    else
+      content_type
+    end
+  end
+end
+
+#
+#
 class HISGateway < Sinatra::Base
 
   set :sessions, true
