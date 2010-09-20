@@ -8,7 +8,7 @@ case "$1" in
   start)
     echo "Starting vhgw"
     cd $APPDIR
-    nohup bundle exec rackup -s Jetty > $APPDIR/log/vhgw.log 2>&1 &
+    nohup bundle exec bin/rackup > $APPDIR/log/vhgw.log 2>&1 &
     if [ $! != $$ ]; then
       if [ -x $PIDFILE ]; then
         rm $PIDFILE
@@ -32,7 +32,7 @@ case "$1" in
       if [ "$!" == "0" ]; then
         rm $PIDFILE
       else
-        echo "Failed to kill vhgw, resorting to brute force."
+        echo "Failed to kill vhgw."#, resorting to brute force."
         # Find the darn thing and kill it
         #kill -9 `ps auwx | grep trinidad | grep -v grep | awk '{ print $2 }'`
       fi

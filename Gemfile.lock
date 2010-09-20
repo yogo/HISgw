@@ -2,7 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     activesupport (3.0.0)
-    addressable (2.2.0)
+    addressable (2.2.1)
     bouncy-castle-java (1.5.0145.2)
     capistrano (2.5.19)
       highline
@@ -12,21 +12,21 @@ GEM
       net-ssh-gateway (>= 1.0.0)
     data_objects (0.10.2)
       addressable (~> 2.1)
-    dm-core (1.0.0)
-      addressable (~> 2.1)
+    dm-core (1.0.2)
+      addressable (~> 2.2)
       extlib (~> 0.9.15)
-    dm-do-adapter (1.0.0)
-      data_objects (~> 0.10.1)
-      dm-core (~> 1.0.0)
-    dm-serializer (1.0.0)
-      dm-core (~> 1.0.0)
+    dm-do-adapter (1.0.2)
+      data_objects (~> 0.10.2)
+      dm-core (~> 1.0.2)
+    dm-serializer (1.0.2)
+      dm-core (~> 1.0.2)
       fastercsv (~> 1.5.3)
-      json_pure (~> 1.4.3)
-    dm-sqlserver-adapter (1.0.0)
-      dm-do-adapter (~> 1.0.0)
+      json_pure (~> 1.4)
+    dm-sqlserver-adapter (1.0.2)
+      dm-do-adapter (~> 1.0.2)
       do_sqlserver (~> 0.10.2)
-    dm-validations (1.0.0)
-      dm-core (~> 1.0.0)
+    dm-validations (1.0.2)
+      dm-core (~> 1.0.2)
     do-jdbc_sqlserver (1.2.4-java)
     do_jdbc (0.10.2-java)
       data_objects (= 0.10.2)
@@ -36,16 +36,13 @@ GEM
       do_jdbc (= 0.10.2)
     extlib (0.9.15)
     fastercsv (1.5.3)
-    ffi (0.6.3-java)
-    ffi-ncurses (0.3.3)
-      ffi (>= 0.6.3)
     haml (3.0.18)
     highline (1.6.1)
     jrexml (0.5.3)
     jruby-openssl (0.7.1)
       bouncy-castle-java
     json_pure (1.4.6)
-    net-scp (1.0.3)
+    net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
       net-ssh (>= 2.0.9)
@@ -69,7 +66,6 @@ DEPENDENCIES
   dm-sqlserver-adapter
   dm-validations
   extlib
-  ffi-ncurses
   haml
   jrexml
   jruby-openssl

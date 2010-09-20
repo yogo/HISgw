@@ -1,4 +1,3 @@
-# A sample Gemfile
 source "http://rubygems.org"
 
 gem "sinatra"
@@ -17,6 +16,5 @@ end
 
 platforms :jruby do
   gem "jruby-openssl"
-#  gem "ffi-ncurses"
   gem "jrexml", :require => "rexml/document"
 end
