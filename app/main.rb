@@ -11,6 +11,7 @@ class Rack::Request
   end
 
   def media_type
+    puts " ******************* I'm in your method"
     if content_type.nil? || content_type.empty? 
       nil
     else
