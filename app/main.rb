@@ -2,6 +2,9 @@
 # http://gist.github.com/519415#file_rack_content_type_patch.rb
 
 class Rack::Request
+  undef_method(:content_type)
+  undef_method(:media_type)
+
   def content_type
     content_type = @env['CONTENT_TYPE']
     content_type.nil? || content_type.empty? ? nil : content_type
