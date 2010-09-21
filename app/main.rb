@@ -2,12 +2,14 @@
 # http://gist.github.com/519415#file_rack_content_type_patch.rb
 
 class Rack::Request
-  def media_type_params
-    return {} if content_type.nil? || content_type.empty?
-    content_type.split(/\s*[;,]\s*/)[1..-1].
-      collect { |s| s.split('=', 2) }.
-      inject({}) { |hash,(k,v)| hash[k.downcase] = v ; hash }
-  end 
+  def content_type
+    content_type = @env['CONTENT_TYPE']
+    if content_type == ''
+      nil
+    else
+      content_type
+    end
+  end
 end
 
 #
