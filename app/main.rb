@@ -6,6 +6,14 @@ class Rack::Request
     content_type = @env['CONTENT_TYPE']
     content_type.nil? || content_type.empty? ? nil : content_type
   end
+
+  def media_type
+    if content_type.nil? || content_type.empty? 
+      nil
+    else
+      content_type && content_type.split(/\s*[;,]\s*/, 2).first.downcase
+    end
+  end
 end
 
 #
