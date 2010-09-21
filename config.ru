@@ -11,6 +11,9 @@ require 'config/datamapper'
 # Load DataMapper models for HIS
 require 'app/models/his/his'
 
+# This is a hack to fix rack content-type handling
+require 'app/rack/request'
+
 # Load the Application Version
 load File.join(File.dirname(__FILE__), 'VERSION')
 
