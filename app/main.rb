@@ -1,9 +1,7 @@
 #
 #
 class HISGateway < Sinatra::Base
-
   set :sessions, true
-  set :views, File.join(File.dirname(__FILE__), 'views')
   set :run, false
   set :env, (ENV['RACK_ENV'] ? ENV['RACK_ENV'].to_sym : :development)
   set :haml, { :format => :html5 }
@@ -52,6 +50,11 @@ class HISGateway < Sinatra::Base
       return true
       @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['voeis', 'secret']
     end
+  end
+
+  # stupid favicon.ico
+  get %r{/favicon.*} do
+    
   end
 
   # Main page, this is where documentation should go

@@ -7,7 +7,7 @@ set :rvm_ruby_string, 'jruby'
 set :application,     "VOEIS - HIS Gateway"
 set :use_sudo,        false
 
-set :repository,      "git://github.com/yogo/VOEIS-HIS-Gateway.git"
+set :repository,      "git://github.com/yogo/HISgw.git"
 set :scm,             :git
 set :shell,           "/bin/bash"
 
