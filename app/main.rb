@@ -4,11 +4,7 @@
 class Rack::Request
   def content_type
     content_type = @env['CONTENT_TYPE']
-    if content_type == ''
-      nil
-    else
-      content_type
-    end
+    content_type.nil? || content_type.empty? ? nil : content_type
   end
 end
 
