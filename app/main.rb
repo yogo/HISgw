@@ -14,7 +14,6 @@ class HISGateway < Sinatra::Base
     end
 
     if format == "xml"
-      puts "Data: #{data.to_xml}"
       return data.to_xml
     elsif format == "yaml"
       return data.to_yaml
@@ -55,7 +54,7 @@ class HISGateway < Sinatra::Base
 
   # stupid favicon.ico
   get %r{/favicon.*} do
-    
+
   end
 
   # Main page, this is where documentation should go
