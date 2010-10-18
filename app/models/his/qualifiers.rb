@@ -1,5 +1,6 @@
 class Qualifier
   include DataMapper::Resource
+  storage_names[:default] = "Qualifiers"
 
   property :id, Serial, :required => true, :key => true, :field => "QualifierID"
   property :qualifier_code, String, :field => "QualifierCode"

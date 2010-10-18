@@ -1,5 +1,6 @@
 class LabMethod
   include DataMapper::Resource
+  storage_names[:default] = "LabMethods"
 
   property :id, Serial, :required => true, :key => true, :field => "LabMethodID"
   property :lab_name, String, :required => true, :default => 'Unknown', :field => "LabName"

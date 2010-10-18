@@ -1,5 +1,6 @@
 class SpatialReference
   include DataMapper::Resource
+  storage_names[:default] = "SpatialReferences"
 
   property :id,             Serial,  :field => "SpatialReferenceID", :required => true, :key =>true
   property :srs_id,         Integer, :field => "SRSID"

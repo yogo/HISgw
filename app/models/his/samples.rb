@@ -1,5 +1,6 @@
 class Sample
   include DataMapper::Resource
+  storage_names[:default] = "Samples"
 
   property :id, Serial, :required => true, :key => true, :field => "SampleID"
   property :sample_type, String, :required => true, :default => 'Unknown', :field => "SampleType"

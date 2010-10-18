@@ -1,5 +1,6 @@
 class Group
   include DataMapper::Resource
+  storage_names[:default] = "Groups"
 
   property :id,       Integer, :required => true, :field => "GroupID", :key => true
   property :value_id, Integer, :required => true, :field => "ValueID"

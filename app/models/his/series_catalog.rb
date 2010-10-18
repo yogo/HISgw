@@ -1,5 +1,7 @@
 class SeriesCatalog
   include DataMapper::Resource
+  storage_names[:default] = "SeriesCatalog"
+  
   property :SeriesID, Serial, :required => true, :key => true
   property :SiteID, Integer
   property :SiteCode, String

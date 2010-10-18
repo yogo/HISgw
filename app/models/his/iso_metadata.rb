@@ -1,5 +1,6 @@
 class ISOMetadata
   include DataMapper::Resource
+  storage_names[:default] = "ISOMetadata"
 
   property :id,               Serial, :required => true, :key => true, :field => "MetadataID"
   property :topic_category,   String, :required => true, :default => 'Unknown', :field => "TopicCategory"

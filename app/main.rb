@@ -74,7 +74,7 @@ class HISGateway < Sinatra::Base
   end
 
   get %r{/(\w*)\/*(\w*)\.*(\w*)} do |klass, id, format|
-    model = Object.const_get("#{klass.singularize.camelize.gsub("Cv", "CV")}")
+    model = Object.const_get("#{klass.singularize.camelize}")
     instance = id.empty? ? model.all : model.get(id.to_i)
     post_format(model, instance, format)
   end

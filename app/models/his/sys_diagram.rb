@@ -1,5 +1,6 @@
 class SysDiagrams
   include DataMapper::Resource
+  storage_names[:default] = "SysDiagrams"
 
   property :name, String, :required => true, :unique => true, :field => "Name"
   property :principal_id, Integer, :required => true, :unique => true, :field => "Principal_id"

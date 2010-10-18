@@ -1,6 +1,7 @@
 class Category
   include DataMapper::Resource
-
+  storage_names[:default] = "Categories"
+  
   property :id,                   Integer,  :required => true, :field => "VariableID",  :key => true
   property :data_value,           Float,    :required => true, :field => "DataValue"
   property :category_description, String,   :required => true, :field => "CategoryDescription"
