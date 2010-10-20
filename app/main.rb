@@ -27,7 +27,8 @@ class HISGateway < Sinatra::Base
     if types.include?('application/json')
       return data.to_json
     elsif types.include?('application/xml') || types.include?('text/xml')
-      puts return data.to_xml
+      puts data.to_xml
+      return data.to_xml
     elsif types.include?('application/x-yaml') || types.include?('text/yaml')
       return data.to_yaml
     elsif types.include?('text/csv') || types.include?('text/comma-separated-values')
