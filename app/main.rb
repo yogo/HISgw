@@ -15,7 +15,7 @@ class HISGateway < Sinatra::Base
 
     if format == "xml"
       content_type :xml
-      return data.to_xml
+      return data.to_xml({:version => 1.0, :encoding => "UTF-8"})
     elsif format == "yaml"
       content_type :yaml
       return data.to_yaml
