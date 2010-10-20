@@ -16,6 +16,7 @@ class HISGateway < Sinatra::Base
     if format == "xml"
       content_type :xml
       xml_doc = data.to_xml_document
+      xml_dox.to_s
       xml_doc << REXML::XMLDecl.default
       
       return xml_doc.to_s
@@ -37,6 +38,7 @@ class HISGateway < Sinatra::Base
     elsif types.include?('application/xml') || types.include?('text/xml')
       content_type :xml
       xml_doc = data.to_xml_document
+      xml_doc.to_s
       xml_doc << REXML::XMLDecl.default
       
       return xml_doc.to_s
