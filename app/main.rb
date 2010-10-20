@@ -14,25 +14,32 @@ class HISGateway < Sinatra::Base
     end
 
     if format == "xml"
-      
-      return '<?xml version="1.0" encoding="UTF-8"?>' +data.to_xml
+      content_type :xml
+      return data.to_xml
     elsif format == "yaml"
+      content_type :yaml
       return data.to_yaml
     elsif format == "csv"
+      content_type :csv
       return data.to_csv
     elsif format == "json"
+      content_type :json
       return data.to_json
     end
 
     types = Sinatra::Request.new(env).accept()
     if types.include?('application/json')
+      content_type :json
       return data.to_json
     elsif types.include?('application/xml') || types.include?('text/xml')
+      content_type :xml
       puts data.to_xml
       return data.to_xml
     elsif types.include?('application/x-yaml') || types.include?('text/yaml')
+      content_type :yaml
       return data.to_yaml
     elsif types.include?('text/csv') || types.include?('text/comma-separated-values')
+      content_type :csv
       return data.to_csv
     else
       return data.to_json
