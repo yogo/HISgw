@@ -16,6 +16,7 @@ class HISGateway < Sinatra::Base
     if format == "xml"
       content_type :xml
       xml_doc = data.to_xml_document
+      debugger
       xml_doc.to_s
       xml_doc << REXML::XMLDecl.default
       
