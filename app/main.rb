@@ -15,7 +15,10 @@ class HISGateway < Sinatra::Base
 
     if format == "xml"
       content_type :xml
-      return data.to_xml({:version => 1.0, :encoding => "UTF-8"})
+      xml_doc = data.to_xml_document
+      xml_doc << XMLDecl.default
+      
+      return xml_doc.to_s
     elsif format == "yaml"
       content_type :yaml
       return data.to_yaml
@@ -33,8 +36,10 @@ class HISGateway < Sinatra::Base
       return data.to_json
     elsif types.include?('application/xml') || types.include?('text/xml')
       content_type :xml
-      puts data.to_xml
-      return data.to_xml
+      xml_doc = data.to_xml_document
+      xml_doc << XMLDecl.default
+      
+      return xml_doc.to_s
     elsif types.include?('application/x-yaml') || types.include?('text/yaml')
       content_type :yaml
       return data.to_yaml
@@ -126,6 +131,8 @@ class HISGateway < Sinatra::Base
     xml  = DataMapper::Serialize::XMLSerializers::SERIALIZER
     doc  = xml.new_document
     root = xml.root_node(doc, model.to_s.underscore.tr("/", "-"))
+    doc.to_s
+    doc << XMLDecl.default
     doc.to_s
   end
 
