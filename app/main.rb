@@ -99,9 +99,10 @@ class HISGateway < Sinatra::Base
    # end
 
   get %r{/(\w*)\/*(\w*)\.*(\w*)} do |klass, id, format|
+    model_name = klass.singularize.camelize
     model = Object.const_get("#{klass.singularize.camelize.gsub("Cv", "CV")}")
     instance = id.empty? ? model.all : model.get(id.to_i)
-    if klass == "units" || klass == "Units" || klass == "unit" || klass = "units"
+    if model_name.to_s == "Unit" 
       if !id.empty?
         if instance.units_name == "angstrom"
           instance.units_abbreviation = "ang"
