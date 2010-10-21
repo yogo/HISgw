@@ -17,10 +17,10 @@ class HISGateway < Sinatra::Base
     if format == "xml"
       content_type :xml
       xml_doc = data.to_xml_document
-      xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
+      #xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
       xml_string = xml_doc.to_s
       char_detection = CharDet.detect(xml_string)
-      xml_doc = Iconv.conv('UTF-8', char_detection['encoding'], xml_string)
+      xml_doc = Iconv.conv('UTF-16', char_detection['encoding'], xml_string)
       xml_doc = REXML::Document::new(xml_string)
       return xml_doc.to_s
     elsif format == "yaml"
@@ -85,13 +85,33 @@ class HISGateway < Sinatra::Base
   end
 
   # ODM Version
+  # 
   get %r{/odm_versions\.*(\w*)} do |format|
     post_format(::ODMVersion, ::ODMVersion.all, format)
   end
+   #  
+   # get %r{/units\.*(\w*)} do |format|
+   #   model = Object.const_get("#{klass.singularize.camelize.gsub("Cv", "CV")}")
+   #   instance = id.empty? ? model.all : model.get(id.to_i)
+   #   instance.first(:units_name => "angstrom").units_abbreviation = "ang"
+   #   xml_string = post_format(model, instance, format)
+   #   
+   # end
 
   get %r{/(\w*)\/*(\w*)\.*(\w*)} do |klass, id, format|
     model = Object.const_get("#{klass.singularize.camelize.gsub("Cv", "CV")}")
     instance = id.empty? ? model.all : model.get(id.to_i)
+    if klass == "units" || klass == "Units" || klass == "unit" || klass = "units"
+      if !id.empty?
+        if instance.units_name == "angstrom"
+          instance.units_abbreviation = "ang"
+        end
+      else
+        if !instance.first(:units_name => "angstrom").nil?
+          instance.first(:units_name => "angstrom").units_abbreviation = "ang"
+        end
+      end
+    end
     post_format(model, instance, format)
   end
 
