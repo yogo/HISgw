@@ -16,7 +16,7 @@ class HISGateway < Sinatra::Base
     if format == "xml"
       content_type :xml
       xml_doc = data.to_xml_document
-      xml_doc << REXML::XMLDecl.new(1.0, "iso-8859-2")
+      xml_doc << REXML::XMLDecl.new(1.0, "windows-1200")
       return xml_doc.to_s
     elsif format == "yaml"
       content_type :yaml
@@ -36,7 +36,7 @@ class HISGateway < Sinatra::Base
     elsif types.include?('application/xml') || types.include?('text/xml')
       content_type :xml
       xml_doc = data.to_xml_document
-      xml_doc << REXML::XMLDecl.new(1.0, "iso-8859-2")
+      xml_doc << REXML::XMLDecl.new(1.0, "windows-1200")
       return xml_doc.to_s
     elsif types.include?('application/x-yaml') || types.include?('text/yaml')
       content_type :yaml
