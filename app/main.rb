@@ -1,5 +1,6 @@
 #
 #
+require 'iconv'
 class HISGateway < Sinatra::Base
   set :views, File.dirname(__FILE__) + "/views"
   set :sessions, true
@@ -15,8 +16,11 @@ class HISGateway < Sinatra::Base
 
     if format == "xml"
       content_type :xml
-      xml_doc = data.to_xml_document
-      xml_doc << REXML::XMLDecl.new(1.0, "iso-8859-2")
+      xml_doc = data.to_xml_document.to_s
+      char_detection = CharDet.detect(xml_doc)
+      xml_doc = Iconv.conv('UTF-8', char_detection['encoding'], xml_doc)
+      xml_doc = REXML::Document::new(xml_doc)
+      xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
       return xml_doc.to_s
     elsif format == "yaml"
       content_type :yaml
@@ -60,7 +64,7 @@ class HISGateway < Sinatra::Base
     def authorized?
       @auth ||= Rack::Auth::Basic::Request.new(request.env)
       return true
-      @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['voeis', 'secret']
+      # @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['voeis', 'secret']
     end
   end
 
