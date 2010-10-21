@@ -17,7 +17,7 @@ class HISGateway < Sinatra::Base
       content_type :xml
       xml_doc = data.to_xml_document
       xml_doc << REXML::XMLDecl.default
-      putd xml_doc.to_s
+      puts xml_doc.to_s
       return xml_doc.to_s
     elsif format == "yaml"
       content_type :yaml
