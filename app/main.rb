@@ -17,10 +17,11 @@ class HISGateway < Sinatra::Base
     if format == "xml"
       content_type :xml
       xml_doc = data.to_xml_document
+      xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
       #xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
       xml_string = xml_doc.to_s
       char_detection = CharDet.detect(xml_string)
-      xml_doc = Iconv.conv('UTF-16', char_detection['encoding'], xml_string)
+      xml_doc = Iconv.conv('UTF-8', char_detection['encoding'], xml_string)
       xml_doc = REXML::Document::new(xml_string)
       return xml_doc.to_s
     elsif format == "yaml"
