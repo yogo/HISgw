@@ -122,8 +122,8 @@ class HISGateway < Sinatra::Base
         end
       else
         if !instance.first(:term => "9 cis-Neoxanthin").nil?
-          instance.term = "9cis-Neoxanthin"
           instance.first(:term => "9 cis-Neoxanthin").definition = "9 cis-Neoxanthin - phytoplankton pigment"
+          instance.first(:term => "9 cis-Neoxanthin").term = "9cis-Neoxanthin"
         end
       end
     end
