@@ -115,7 +115,7 @@ class HISGateway < Sinatra::Base
       end
     end
     if model_name.to_s =="VariableNameCV"
-      if !term.empty?
+      if !id.empty?
         if instance.term == "9 cis-Neoxanthin"
           instance.description = "9 cis-Neoxanthin - phytoplankton pigment"
         end
