@@ -1,5 +1,6 @@
 #
 #
+require 'iconv'
 class HISGateway < Sinatra::Base
   set :views, File.dirname(__FILE__) + "/views"
   set :sessions, true
@@ -16,8 +17,12 @@ class HISGateway < Sinatra::Base
     if format == "xml"
       content_type :xml
       xml_doc = data.to_xml_document
-      xml_doc << REXML::XMLDecl.default
-      
+      xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
+      #xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
+      xml_string = xml_doc.to_s
+      char_detection = CharDet.detect(xml_string)
+      xml_doc = Iconv.conv('UTF-8', char_detection['encoding'], xml_string)
+      xml_doc = REXML::Document::new(xml_string)
       return xml_doc.to_s
     elsif format == "yaml"
       content_type :yaml
@@ -37,8 +42,7 @@ class HISGateway < Sinatra::Base
     elsif types.include?('application/xml') || types.include?('text/xml')
       content_type :xml
       xml_doc = data.to_xml_document
-      xml_doc << REXML::XMLDecl.default
-      
+      xml_doc << REXML::XMLDecl.new(1.0, "iso-8859-2")
       return xml_doc.to_s
     elsif types.include?('application/x-yaml') || types.include?('text/yaml')
       content_type :yaml
@@ -62,7 +66,7 @@ class HISGateway < Sinatra::Base
     def authorized?
       @auth ||= Rack::Auth::Basic::Request.new(request.env)
       return true
-      @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['voeis', 'secret']
+      # @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == ['voeis', 'secret']
     end
   end
 
@@ -82,13 +86,47 @@ class HISGateway < Sinatra::Base
   end
 
   # ODM Version
+  # 
   get %r{/odm_versions\.*(\w*)} do |format|
     post_format(::ODMVersion, ::ODMVersion.all, format)
   end
+   #  
+   # get %r{/units\.*(\w*)} do |format|
+   #   model = Object.const_get("#{klass.singularize.camelize.gsub("Cv", "CV")}")
+   #   instance = id.empty? ? model.all : model.get(id.to_i)
+   #   instance.first(:units_name => "angstrom").units_abbreviation = "ang"
+   #   xml_string = post_format(model, instance, format)
+   #   
+   # end
 
   get %r{/(\w*)\/*(\w*)\.*(\w*)} do |klass, id, format|
+    model_name = klass.singularize.camelize
     model = Object.const_get("#{klass.singularize.camelize.gsub("Cv", "CV")}")
     instance = id.empty? ? model.all : model.get(id.to_i)
+    if model_name.to_s == "Unit" 
+      if !id.empty?
+        if instance.units_name == "angstrom"
+          instance.units_abbreviation = "ang"
+        end
+      else
+        if !instance.first(:units_name => "angstrom").nil?
+          instance.first(:units_name => "angstrom").units_abbreviation = "ang"
+        end
+      end
+    end
+    if model_name.to_s =="VariableNameCV"
+      if !id.empty?
+        if instance.term == "9 cis-Neoxanthin"
+          instance.term = "9cis-Neoxanthin"
+          instance.definition = "9 cis-Neoxanthin - phytoplankton pigment"
+        end
+      else
+        if !instance.first(:term => "9 cis-Neoxanthin").nil?
+          instance.first(:term => "9 cis-Neoxanthin").definition = "9 cis-Neoxanthin - phytoplankton pigment"
+          instance.first(:term => "9 cis-Neoxanthin").term = "9cis-Neoxanthin"
+        end
+      end
+    end
     post_format(model, instance, format)
   end
 

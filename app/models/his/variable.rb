@@ -25,7 +25,7 @@ class Variable
   belongs_to :value_type_cv,        :model => "ValueTypeCV",       :child_key => [:value_type]
   belongs_to :variable_name_cv,     :model => "VariableNameCV",    :child_key => [:variable_name]
   belongs_to :speciation_cv,        :model => "SpeciationCV",      :child_key => [:speciation]
-  belongs_to :data_values,          :model => "DataValue",         :child_key => [:varialbe_id]
+  belongs_to :data_values,          :model => "DataValue",         :child_key => [:variable_id]
 
   validates_uniqueness_of :variable_code
 end

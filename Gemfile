@@ -10,6 +10,8 @@ gem "extlib"
 gem "rack-jetty"
 gem "activesupport", "3.0"
 
+gem 'rchardet'
+
 group :development do
   gem "capistrano"
 end
