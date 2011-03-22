@@ -5,7 +5,6 @@ class HISGateway < Sinatra::Base
   set :views, File.dirname(__FILE__) + "/views"
   set :sessions, true
   set :run, false
-  set :env, (ENV['RACK_ENV'] ? ENV['RACK_ENV'].to_sym : :development)
   set :haml, { :format => :html5 }
 
   configure(:development) do
