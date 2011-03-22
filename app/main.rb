@@ -8,6 +8,12 @@ class HISGateway < Sinatra::Base
   set :env, (ENV['RACK_ENV'] ? ENV['RACK_ENV'].to_sym : :development)
   set :haml, { :format => :html5 }
 
+  configure(:development) do
+    register Sinatra::Reloader
+    also_reload "app/models/*.rb"
+    dont_reload "lib/**/*.rb"
+  end
+  
   def post_format(model, data, format = nil)
 
     if data.nil?

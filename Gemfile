@@ -18,6 +18,7 @@ gem 'rchardet'
 
 group :development do
   gem "capistrano"
+  gem "sinatra-reloader",   :require => "sinatra/reloader"
 end
 
 platforms :jruby do
