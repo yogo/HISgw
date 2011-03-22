@@ -2,8 +2,10 @@
 require 'rubygems'
 require 'bundler/setup'
 
+running_environment = ENV['RACK_ENV'] ? ENV['RACK_ENV'].to_sym : :development
+
 # Load the bundler gemset
-Bundler.require(:default)
+Bundler.require(:default, running_environment)
 
 # Load DataMapper repository configurations
 require 'config/datamapper'
