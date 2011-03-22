@@ -54,7 +54,7 @@ GEM
     net-ssh-gateway (1.0.1)
       net-ssh (>= 1.99.1)
     rack (1.2.2)
-    rack-jetty (0.1.0)
+    rack-jetty (0.2.0)
       rack (>= 1.0.0)
     rchardet (1.3)
     sinatra (1.2.1)
