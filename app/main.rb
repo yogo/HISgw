@@ -121,6 +121,17 @@ class HISGateway < Sinatra::Base
     get "/#{path}/:id/?" do
       respond_with( model.get(params[:id]) )
     end
+
+    put "/#{path}/:id/?" do
+      protected!
+      body = request.body.read
+      xml.gsub!("his-#{model.name}", model.name)
+      instance = model.get(params[:id])
+      record = parse_resource(xml, model)
+      instance.update(record)
+      instance.save
+      respond_with(instance)
+    end
   end
 
   post %r{/(\w*)\/*(\w*)\.*(\w*)} do |klass, id, format|
@@ -131,20 +142,6 @@ class HISGateway < Sinatra::Base
     xml = req.body.read
     xml.gsub!("his-#{model_name.downcase}", model_name)
     instance = model.create(parse_resource(xml, model))
-    post_format(model, instance, format)
-  end
-
-  put %r{/(\w*)\/*(\w*)\.*(\w*)} do |klass, id, format|
-    protected!
-    model_name = klass.singularize.camelize
-    model = Object.const_get("#{model_name}")
-    req = Rack::Request.new(env)
-    xml = req.body.read
-    xml.gsub!("his-#{model_name.underscore}", model_name)
-    instance = model.get(id)
-    record = parse_resource(xml, model)
-    instance.update(parse_resource(xml, model))
-    instance.save
     post_format(model, instance, format)
   end
 
