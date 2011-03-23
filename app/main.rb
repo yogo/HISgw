@@ -236,4 +236,30 @@ class HISGateway < Sinatra::Base
       end
     end
   end
+
+  def respond_with(data)
+    content_type @response_type
+    
+    case(@response_type)
+    when :html then
+      return data.to_xml
+    when :json then
+      return data.to_json
+    when :yaml then
+      return data.to_yaml
+    when :csv  then
+      return data.to_csv
+    when :xml  then
+      xml_doc = data.to_xml_document
+      xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
+      #xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
+      xml_string = xml_doc.to_s
+      char_detection = CharDet.detect(xml_string)
+      xml_doc = Iconv.conv('UTF-8', char_detection['encoding'], xml_string)
+      xml_doc = REXML::Document::new(xml_string)
+      return xml_doc.to_s
+    else
+      return data.to_s
+    end
+  end
 end
