@@ -1,5 +1,5 @@
-#
-#
+# encoding: UTF-8
+
 require 'iconv'
 class HISGateway < Sinatra::Base
   set :views, File.dirname(__FILE__) + "/views"
