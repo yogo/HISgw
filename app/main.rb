@@ -12,6 +12,12 @@ class HISGateway < Sinatra::Base
     also_reload "app/models/*.rb"
     dont_reload "lib/**/*.rb"
   end
+
+  VALID_RESPONSE_FORMATS = [ :json, :xml, :csv, :yaml, :html ]
+  
+  before do
+    set_response_type()
+  end
   
   def post_format(model, data, format = nil)
 
@@ -204,5 +210,30 @@ class HISGateway < Sinatra::Base
     end
 
     record_from_rexml(entity_element, model)
+  end
+
+  def set_response_type
+    types     = request.accept
+    puts       request.path
+    matches  = request.path.to_s.match(/\.(\w*)$/)
+    extension = matches[1] unless matches.nil?
+    
+    @response_type = extension.to_sym if (!extension.nil?) && VALID_RESPONSE_FORMATS.include?(extension.to_sym)
+
+    if @response_type.nil?
+      if types.include?("text/html")
+        @response_type = :html
+      elsif types.include?('application/json')
+        @response_type =  :json
+      elsif types.include?('application/xml') || types.include?('text/xml')
+        @response_type =  :xml
+      elsif types.include?('application/x-yaml') || types.include?('text/yaml')
+        @response_type = :yaml
+      elsif types.include?('text/csv') || types.include?('text/comma-separated-values')
+        @response_type = :csv
+      else
+        @response_type = :html
+      end
+    end
   end
 end
