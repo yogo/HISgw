@@ -11,4 +11,12 @@ class Unit
   has n, :variables, :model => "Variables"
   has n, :offset_types, :model => "OffsetTypes"
 
+
+  def units_appreviation
+    if self.units_name.eql?("angstrom")
+      return "ang"
+    else
+      return super
+    end
+  end
 end
