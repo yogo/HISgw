@@ -99,7 +99,8 @@ class HISGateway < Sinatra::Base
   # ODM Version
   # 
   get %r{/odm_versions\.*(\w*)} do |format|
-    post_format(::ODMVersion, ::ODMVersion.all, format)
+
+    respond_with( ::ODMVersion.all )
   end
    #  
    # get %r{/units\.*(\w*)} do |format|
@@ -110,35 +111,16 @@ class HISGateway < Sinatra::Base
    #   
    # end
 
-  get %r{/(\w*)\/*(\w*)\.*(\w*)} do |klass, id, format|
-    model_name = klass.singularize.camelize
-    model = Object.const_get("#{klass.singularize.camelize.gsub("Cv", "CV")}")
-    instance = id.empty? ? model.all : model.get(id.to_i)
-    if model_name.to_s == "Unit" 
-      if !id.empty?
-        if instance.units_name == "angstrom"
-          instance.units_abbreviation = "ang"
-        end
-      else
-        if !instance.first(:units_name => "angstrom").nil?
-          instance.first(:units_name => "angstrom").units_abbreviation = "ang"
-        end
-      end
+  DataMapper::Model.descendants.each do |model|
+    path = model.name.tableize
+
+    get "/#{path}/?" do
+      respond_with(model.all)
     end
-    if model_name.to_s =="VariableNameCV"
-      if !id.empty?
-        if instance.term == "9 cis-Neoxanthin"
-          instance.term = "9cis-Neoxanthin"
-          instance.definition = "9 cis-Neoxanthin - phytoplankton pigment"
-        end
-      else
-        if !instance.first(:term => "9 cis-Neoxanthin").nil?
-          instance.first(:term => "9 cis-Neoxanthin").definition = "9 cis-Neoxanthin - phytoplankton pigment"
-          instance.first(:term => "9 cis-Neoxanthin").term = "9cis-Neoxanthin"
-        end
-      end
+
+    get "/#{path}/:id/?" do
+      respond_with( model.get(params[:id]) )
     end
-    post_format(model, instance, format)
   end
 
   post %r{/(\w*)\/*(\w*)\.*(\w*)} do |klass, id, format|
