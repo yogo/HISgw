@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 #
-
+CURDIR=$(dirname $0)/../
 APPDIR=/home/voeis-demo/vhgw/current
 PIDFILE=/home/voeis-demo/vhgw/shared/pids/vhgw.pid
+
+echo $CURDIR
 
 case "$1" in
   start)
     echo "Starting vhgw"
     cd $APPDIR
-    nohup bundle exec bin/rackup -s Jetty -w -p 4000 -P tmp/vhgw.pid > $APPDIR/log/vhgw.log 2>&1 &
+    nohup bundle exec bin/rackup -s Jetty -w -p 4000 -E production -P tmp/vhgw.pid > $APPDIR/log/vhgw.log 2>&1 &
     if [ $! != $$ ]; then
       if [ -x $PIDFILE ]; then
         rm $PIDFILE
