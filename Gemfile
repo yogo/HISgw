@@ -14,7 +14,9 @@ gem "activesupport" #, :require => "active_support/all"
 
 gem "i18n"
 
-gem 'rchardet'
+gem "rchardet"
+
+gem "ffi-ncurses"
 
 group :development do
   gem "capistrano"
