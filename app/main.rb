@@ -3,6 +3,8 @@
 require 'iconv'
 class HISGateway < Sinatra::Base
   set :views, File.dirname(__FILE__) + "/views"
+#  set :root,  File.dirname(__FILE__) + "/.."
+  set :tmp,   File.dirname(__FILE__) + "/../tmp/"
   set :sessions, true
   set :run, false
   set :haml, { :format => :html5 }
@@ -16,6 +18,7 @@ class HISGateway < Sinatra::Base
   VALID_RESPONSE_FORMATS = [ :json, :xml, :csv, :yaml, :html ]
   
   before do
+    puts "QUERY STRING: #{request.query_string}"
     set_response_type()
   end
   
@@ -114,22 +117,25 @@ class HISGateway < Sinatra::Base
   DataMapper::Model.descendants.each do |model|
     path = model.name.tableize
 
-    get "/#{path}/?" do
-      respond_with(model.all)
+    get /\/#{path}(\/?$|\.\w+)/ do
+      respond_with( model.all )
     end
 
     get "/#{path}/:id/?" do
-      respond_with( model.get(params[:id]) )
+      id = params[:id].split('.')[0]
+      respond_with( model.get( id ) )
     end
 
-    put "/#{path}/:id/?" do
+    put /\/#{path}\/:id(\/?$|\.\w+)/ do
       protected!
+      request.body.rewind # in case someone already read it
       body = request.body.read
       xml.gsub!("his-#{model.name}", model.name)
       instance = model.get(params[:id])
       record = parse_resource(xml, model)
       instance.update(record)
       instance.save
+      # Also set headers to say OKAY!
       respond_with(instance)
     end
   end
@@ -218,7 +224,37 @@ class HISGateway < Sinatra::Base
 
   def respond_with(data)
     content_type @response_type
+
+    if data.class == DataMapper::Collection
+      send_dm_collection(data)
+    else
+      data_convert(data)
+    end
+  end
+
+  def send_dm_collection(data)
+    count = data.count
+    file_name = "#{data.model.name}.#{@response_type.to_s}"
+    file_path = settings.tmp + DateTime.now.to_s + ".#{@response_type.to_s}"
+
+#    return data.to_json
     
+    start = 0
+    delta = 25
+    File.open(file_path, "w") do |file|
+      file.write( preamble_for(data) )
+      while( start < count )
+        file.write( join_data( data[start..(start+delta)] ) )
+        start = start + delta
+      end
+      file.write( postscript_for(data) )
+    end
+    
+    send_file( file_path, :filename => file_name )
+  end
+
+
+  def data_convert(data)
     case(@response_type)
     when :html then
       return data.to_xml
@@ -229,14 +265,47 @@ class HISGateway < Sinatra::Base
     when :csv  then
       return data.to_csv
     when :xml  then
-      xml_doc = data.to_xml_document
-      xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
-      #xml_doc << REXML::XMLDecl.new(1.0, "UTF-8")
-      xml_string = xml_doc.to_s
-      char_detection = CharDet.detect(xml_string)
-      xml_doc = Iconv.conv('UTF-8', char_detection['encoding'], xml_string)
-      xml_doc = REXML::Document::new(xml_string)
-      return xml_doc.to_s
+      xml_doc = data.to_xml
+      char_detection = CharDet.detect(xml_doc)
+      xml_doc = Iconv.conv('UTF-8', char_detection['encoding'], xml_doc)
+      return xml_doc
+    else
+      return data.to_s
+    end
+  end
+
+  def preamble_for(data)
+    case(@response_type)
+    when :json then
+      return "["
+    when :xml then
+      return REXML::XMLDecl.new(1.0, "UTF-8").to_s + "<#{data.model.storage_name.downcase} type='array'>"
+    else
+      return ""
+    end
+  end
+
+  def postscript_for(data)
+    case(@response_type)
+    when :json then
+      return "]"
+    when :xml then
+      return "</#{data.model.storage_name.downcase}>"
+    else
+      return ""
+    end
+  end
+
+  def join_data(data)
+    case(@response_type)
+    when :json then
+      return data.collect{|d| d.to_json }.join(',')
+    when :xml,:html then
+      return data.collect{|d| d.to_xml }.join('')
+    when :csv then
+      return data.to_csv
+    when :yaml then
+      return data.to_yaml
     else
       return data.to_s
     end
