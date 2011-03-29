@@ -10,7 +10,7 @@ case "$1" in
   start)
     echo "Starting vhgw"
     cd $APPDIR
-    nohup bundle exec bin/rackup -s Jetty -w -p 4000 -P tmp/vhgw.pid > $APPDIR/log/vhgw.log 2>&1 &
+    nohup bundle exec bin/trinidad -p 4000  -r --load daemon --daemonize tmp/vhgw.pid > $APPDIR/log/vhgw.log 2>&1 &
     if [ $! != $$ ]; then
       if [ -x $PIDFILE ]; then
         rm $PIDFILE
@@ -30,7 +30,7 @@ case "$1" in
     echo "Stopping vhgw"
     cd $APPDIR
     if [ -f $PIDFILE ]; then
-      kill -2 `cat $PIDFILE`
+      kill -s SIGINT `cat $PIDFILE`
       if [ "$!" == "0" ]; then
         rm $PIDFILE
       else
