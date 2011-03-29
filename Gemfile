@@ -17,10 +17,11 @@ gem "i18n"
 gem "rchardet"
 
 gem "ffi-ncurses"
+gem "sinatra-reloader",   :require => "sinatra/reloader"
 
 group :development do
   gem "capistrano"
-  gem "sinatra-reloader",   :require => "sinatra/reloader"
+
 end
 
 platforms :jruby do
