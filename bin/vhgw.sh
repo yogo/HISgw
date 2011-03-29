@@ -10,7 +10,7 @@ case "$1" in
   start)
     echo "Starting vhgw"
     cd $APPDIR
-    nohup bundle exec bin/trinidad -p 4000  -r --load daemon --daemonize tmp/vhgw.pid > $APPDIR/log/vhgw.log 2>&1 &
+    nohup bundle exec bin/trinidad -p 4000  -r --load daemon --daemonize $PIDFILE > $APPDIR/log/vhgw.log 2>&1 &
     if [ $! != $$ ]; then
       if [ -x $PIDFILE ]; then
         rm $PIDFILE
