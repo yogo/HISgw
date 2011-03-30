@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 #
-CURDIR=$(dirname $0)/..
-APPDIR=$CURDIR
+CURDIR=$(dirname $0)
+cd $CURDIR/..
+APPDIR=`/usr/bin/env pwd`
 PIDFILE=$APPDIR/tmp/pids/vhgw.pid
 
-echo $CURDIR
+#echo "Application root is $APPDIR"
 
 case "$1" in
     start)
@@ -47,7 +48,7 @@ case "$1" in
         ;;
     
     *)
-        echo ”usage: $0  start|stop|restart”
+        echo "usage: $0  start|stop|restart"
         exit 3
         ;;
 esac
