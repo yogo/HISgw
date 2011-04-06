@@ -1,7 +1,7 @@
 #
 # DataMapper Configuration of the three HIS Servers
 #
-configure :development do
+#configure :development do
   databases = YAML.load(File.read(File.join(Dir.pwd, 'config', 'database.yml')))
 
   # The production HIS Server
@@ -12,4 +12,4 @@ configure :development do
 
   # The prototype HIS Server we'll remove soon
   DataMapper.setup(:ravage, databases['ravage'])
-end
+#end
