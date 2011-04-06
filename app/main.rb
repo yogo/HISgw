@@ -226,33 +226,11 @@ class HISGateway < Sinatra::Base
     content_type @response_type
 
     if data.class == DataMapper::Collection
-      send_dm_collection(data)
+      ChunkedData.new(response, data, @response_type)
     else
       data_convert(data)
     end
   end
-
-  def send_dm_collection(data)
-    count = data.count
-    file_name = "#{data.model.name}.#{@response_type.to_s}"
-    file_path = settings.tmp + DateTime.now.to_s + ".#{@response_type.to_s}"
-
-#    return data.to_json
-    
-    start = 0
-    delta = 25
-    File.open(file_path, "w") do |file|
-      file.write( preamble_for(data) )
-      while( start < count )
-        file.write( join_data( data[start..(start+delta)] ) )
-        start = start + delta
-      end
-      file.write( postscript_for(data) )
-    end
-    
-    send_file( file_path, :filename => file_name )
-  end
-
 
   def data_convert(data)
     case(@response_type)
@@ -274,32 +252,96 @@ class HISGateway < Sinatra::Base
     end
   end
 
-  def preamble_for(data)
-    case(@response_type)
+end
+
+# This isn't used right now, but might be useful so I'm leaving it here.
+class MultipartBody
+  def initialize(response, &block)
+    @boundary = 'MultipartBody'
+    response['Content-Type'] = "multipart/mixed; boundary=\"#{@boundary}\""
+    response['Transfer-Encoding'] = 'chunked'
+    instance_eval(&block) if block
+  end
+  
+  def chunk(content_type, body)
+    "--#{@boundary}\nContent-Type: #{content_type}\n\n#{body}\n"
+  end
+end
+
+# Sends the data, chunked
+class ChunkedData
+  
+  def initialize(response, content, content_type, &block)
+    # Modify the response if needed.
+    
+    @content = content
+    @content_type = content_type
+  end
+  
+  def each
+    yield preamble
+    
+    count = @content.count
+
+    # Just get the first element into the stream
+    yield convert_element( @content.first ) 
+    
+    start = 1
+    delta = 25
+    while( start < count )
+      yield  body( @content[start..(start+delta)] ) 
+      start = start + delta
+    end
+    
+    yield postscript 
+    
+  end
+
+  # Stuff that is needed before sending the main content
+  def preamble
+    case(@content_type)
     when :json then
       return "["
     when :xml then
-      return REXML::XMLDecl.new(1.0, "UTF-8").to_s + "<#{data.model.storage_name.downcase} type='array'>"
+      return REXML::XMLDecl.new(1.0, "UTF-8").to_s + "<#{@content.model.storage_name.downcase} type='array'>"
     else
       return ""
     end
   end
 
-  def postscript_for(data)
-    case(@response_type)
+  # Stuff to send after sending the main content
+  def postscript
+    case(@content_type)
     when :json then
       return "]"
     when :xml then
-      return "</#{data.model.storage_name.downcase}>"
+      return "</#{@content.model.storage_name.downcase}>"
     else
       return ""
     end
   end
 
-  def join_data(data)
-    case(@response_type)
+  # Convert element(s) into the content_type.
+  def convert_element(data)
+    case(@content_type)
     when :json then
-      return data.collect{|d| d.to_json }.join(',')
+      return data.to_json
+    when :xml,:html then
+      return data.to_xml
+    when :csv then
+      return data.to_csv
+    when :yaml then
+      return data.to_yaml
+    else
+      return data.to_s
+    end
+  end
+
+  # Converts a subset of data into a chunk of the body
+  def body(data)
+    case(@content_type)
+    when :json then
+      return "," + data.collect{|d| d.to_json }.join(',')
     when :xml,:html then
       return data.collect{|d| d.to_xml }.join('')
     when :csv then
