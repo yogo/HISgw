@@ -18,7 +18,6 @@ class HISGateway < Sinatra::Base
   VALID_RESPONSE_FORMATS = [ :json, :xml, :csv, :yaml, :html ]
   
   before do
-    puts "QUERY STRING: #{request.query_string}"
     set_response_type()
   end
   
