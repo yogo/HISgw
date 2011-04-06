@@ -272,7 +272,7 @@ class ChunkedData
   
   def initialize(response, content, content_type, &block)
     # Modify the response if needed.
-    
+    response["Content-Disposition"] = "attachment; filename=#{content.model.name}.#{content_type}"
     @content = content
     @content_type = content_type
   end
