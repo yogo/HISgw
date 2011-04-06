@@ -117,7 +117,8 @@ class HISGateway < Sinatra::Base
     path = model.name.tableize
 
     get /\/#{path}(\/?$|\.\w+)/ do
-      respond_with( model.all )
+      data = model.all
+      respond_with( data )
     end
 
     get "/#{path}/:id/?" do
@@ -279,17 +280,18 @@ class ChunkedData
   
   def each
     yield preamble
-    
-    count = @content.count
 
-    # Just get the first element into the stream
-    yield convert_element( @content.first ) 
+     # Just get the first element into the stream
+    yield convert_element( @content.first )
     
-    start = 1
-    delta = 25
-    while( start < count )
-      yield  body( @content[start..(start+delta)] ) 
-      start = start + delta
+    offset = 1
+    delta = 100
+    done = false
+    while( !done )
+      chunk = @content[offset..(offset+delta)]
+      yield  body( chunk )
+      offset += delta
+      done = true if chunk.count < delta
     end
     
     yield postscript 
