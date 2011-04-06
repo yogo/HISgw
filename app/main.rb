@@ -9,11 +9,11 @@ class HISGateway < Sinatra::Base
   set :run, false
   set :haml, { :format => :html5 }
 
-#  configure(:development) do
-#    register Sinatra::Reloader
-#    also_reload "app/models/*.rb"
-#    dont_reload "lib/**/*.rb"
-#  end
+  configure(:development) do
+    register Sinatra::Reloader
+    also_reload "app/models/*.rb"
+    dont_reload "lib/**/*.rb"
+  end
 
   VALID_RESPONSE_FORMATS = [ :json, :xml, :csv, :yaml, :html ]
   

@@ -17,7 +17,6 @@ gem "i18n"
 gem "rchardet"
 
 gem "ffi-ncurses"
-#gem "sinatra-reloader",   :require => "sinatra/reloader"
 
 gem "trinidad", :require => nil
 gem "trinidad_daemon_extension", :require => nil
@@ -25,6 +24,7 @@ gem "trinidad_daemon_extension", :require => nil
 
 group :development do
   gem "capistrano"
+  gem "sinatra-reloader",   :require => "sinatra/reloader"
 end
 
 platforms :jruby do

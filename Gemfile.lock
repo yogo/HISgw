@@ -3,6 +3,7 @@ GEM
   specs:
     activesupport (3.0.5)
     addressable (2.2.1)
+    backports (2.0.2)
     bouncy-castle-java (1.5.0145.2)
     capistrano (2.5.19)
       highline
@@ -47,6 +48,8 @@ GEM
       bouncy-castle-java
     jruby-rack (1.0.8)
     json_pure (1.4.6)
+    monkey-lib (0.5.4)
+      backports
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -59,6 +62,16 @@ GEM
     sinatra (1.2.1)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
+    sinatra-advanced-routes (0.5.1)
+      monkey-lib (~> 0.5.0)
+      sinatra (~> 1.0)
+      sinatra-sugar (~> 0.5.0)
+    sinatra-reloader (0.5.0)
+      sinatra (~> 1.0)
+      sinatra-advanced-routes (~> 0.5.0)
+    sinatra-sugar (0.5.0)
+      monkey-lib (~> 0.5.0)
+      sinatra (~> 1.0)
     tilt (1.2.2)
     trinidad (1.1.1)
       jruby-rack (>= 1.0.6)
@@ -84,5 +97,6 @@ DEPENDENCIES
   jruby-openssl
   rchardet
   sinatra
+  sinatra-reloader
   trinidad
   trinidad_daemon_extension
