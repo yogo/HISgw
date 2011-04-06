@@ -104,20 +104,14 @@ class HISGateway < Sinatra::Base
 
     respond_with( ::ODMVersion.all )
   end
-   #  
-   # get %r{/units\.*(\w*)} do |format|
-   #   model = Object.const_get("#{klass.singularize.camelize.gsub("Cv", "CV")}")
-   #   instance = id.empty? ? model.all : model.get(id.to_i)
-   #   instance.first(:units_name => "angstrom").units_abbreviation = "ang"
-   #   xml_string = post_format(model, instance, format)
-   #   
-   # end
 
   DataMapper::Model.descendants.each do |model|
     path = model.name.tableize
 
     get /\/#{path}(\/?$|\.\w+)/ do
-      data = model.all
+      params.each_pair{ |k,v| puts "Key: #{k}, Value: #{v}" }
+      query_params = clean_query_params(model, params)
+      data = model.all(query_params)
       respond_with( data )
     end
 
@@ -252,6 +246,22 @@ class HISGateway < Sinatra::Base
     end
   end
 
+  def clean_query_params(model, query_hash)
+    valid_properties = model.properties.map(&:name)# +
+    # [:limit, :offset] # limits and offsets are broken
+
+    valid_params = {}
+    query_hash.each_pair do |k,v|
+      if valid_properties.include?(k.to_sym)
+        v = v.to_i if [:limit, :offset].include?(k.to_sym)
+        valid_params[k.to_sym] = v
+      end
+
+    end
+
+    return valid_params
+  end
+  
 end
 
 # This isn't used right now, but might be useful so I'm leaving it here.
@@ -289,7 +299,7 @@ class ChunkedData
     done = false
     while( !done )
       chunk = @content[offset..(offset+delta)]
-      yield  body( chunk )
+      yield  body( chunk ) unless chunk.count.eql?(0)
       offset += delta
       done = true if chunk.count < delta
     end
@@ -354,3 +364,4 @@ class ChunkedData
     end
   end
 end
+
