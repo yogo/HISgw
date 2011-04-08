@@ -109,7 +109,6 @@ class HISGateway < Sinatra::Base
     path = model.name.tableize
 
     get /\/#{path}(\/?$|\.\w+)/ do
-      params.each_pair{ |k,v| puts "Key: #{k}, Value: #{v}" }
       query_params = clean_query_params(model, params)
       data = model.all(query_params)
       respond_with( data )
@@ -314,7 +313,7 @@ class ChunkedData
     when :json then
       return "["
     when :xml then
-      return REXML::XMLDecl.new(1.0, "UTF-8").to_s + "<#{@content.model.storage_name.downcase} type='array'>"
+      return REXML::XMLDecl.new(1.0, "UTF-8").to_s + "<#{@content.model.name.tableize} type='array'>"
     else
       return ""
     end
@@ -326,7 +325,7 @@ class ChunkedData
     when :json then
       return "]"
     when :xml then
-      return "</#{@content.model.storage_name.downcase}>"
+      return "</#{@content.model.name.tableize}>"
     else
       return ""
     end
