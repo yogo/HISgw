@@ -333,17 +333,19 @@ class ChunkedData
 
   # Convert element(s) into the content_type.
   def convert_element(data)
-    case(@content_type)
-    when :json then
-      return data.to_json
-    when :xml,:html then
-      return data.to_xml
-    when :csv then
-      return data.to_csv
-    when :yaml then
-      return data.to_yaml
-    else
-      return data.to_s
+    unless data.nil?
+      case(@content_type)
+      when :json then
+        return data.to_json
+      when :xml,:html then
+        return data.to_xml
+      when :csv then
+        return data.to_csv
+      when :yaml then
+        return data.to_yaml
+      else
+        return data.to_s
+      end
     end
   end
 
