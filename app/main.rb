@@ -334,8 +334,6 @@ class ChunkedData
   # Convert element(s) into the content_type.
   def convert_element(data)
     if data.nil?
-      data =""
-    end
       case(@content_type)
       when :json then
         return data.to_json
@@ -348,6 +346,9 @@ class ChunkedData
       else
         return data.to_s
       end
+    else
+      return ""
+    end
   end
 
   # Converts a subset of data into a chunk of the body
